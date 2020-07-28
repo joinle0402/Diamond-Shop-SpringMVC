@@ -1,0 +1,47 @@
+package DiamondShopping.Service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import DiamondShopping.Dao.CategoryDao;
+import DiamondShopping.Dao.NavigationBarDao;
+import DiamondShopping.Dao.ProductDao;
+import DiamondShopping.Dao.SlideDao;
+import DiamondShopping.Dto.Product;
+import DiamondShopping.Entity.Category;
+import DiamondShopping.Entity.NavigationBar;
+import DiamondShopping.Entity.Slide;
+
+@Service
+public class HomeServiceImp implements HomeService {
+
+	@Autowired
+	private SlideDao slideDao;
+	
+	@Autowired
+	private CategoryDao categoryDao;
+	
+	@Autowired
+	private NavigationBarDao navigationBarDao;
+	
+	private ProductDao productDao; 
+	
+	public List<Slide> getDataSlideList() {
+		return slideDao.getDataSlideList();
+	}
+
+	public List<Category> getDataCategoryList() {
+		return categoryDao.getDataCategoryList();
+	}
+
+	public List<NavigationBar> getDataNavigationBarList() {
+		return navigationBarDao.getDataNavigationBarList();
+	}
+
+	public List<Product> getDataProductList() {
+		return productDao.getDataProductList();
+	}
+
+}

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feature</title>
+    <style>
+
+        .container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .block {
+            width: 80%;
+            border: 1px solid black;
+        }
+
+        .block.block_input {
+            display: flex;
+        }
+
+    </style>
+
+</head>
+<body>
+    
+    <div class="container">
+        <div class="block block_input">
+            <textarea name="" id="data-input" cols="100" rows="25"></textarea>
+            <div class="feature">
+                <table>
+                    <tr>
+                        <td>Class Name: </td>
+                        <td><input type="text" id="className"></td>
+                    </tr>
+                    <tr>
+                        <td>Object Name: </td>
+                        <td><input type="text" id="objectName"></td>
+                    </tr>
+                    <tr>
+                        <td><button onclick="SwapperMapperText()">Change To Object Mapper</button></td>
+                        <td><button onclick="">Change To String Builder</button></td>
+                    </tr>
+                    <tr>
+                        <td><button onclick="GenericProperties()">Generic Properties</button></td>
+                        <td></td>
+                    </tr>
+
+                </table>
+                
+                
+            </div>
+        </div>
+
+        <div class="block">
+            <textarea name="" id="data-output" cols="100" rows="25"></textarea>
+
+        </div>
+    </div>
+</body>
+    <script>
+
+        function CamelCase(string) {
+            return `${string[0].toUpperCase()}${string.substr(1, string.length - 1)}`;
+        }
+
+        function GenericProperties() {
+            let rows = document.getElementById('data-input').value.split('\n');
+            let className = document.getElementById('className').value;
+
+            let resultData = '';
+            let typeOfPropertys = [];
+            let nameOfPropertys = [];
+
+            for (let index = 0; index < rows.length; index++) {
+
+                let letters = rows[index].trim().split(' ');
+
+                typeOfPropertys.push(letters[1]);
+                nameOfPropertys.push(letters[2].substr(0, letters[2].length - 1));
+            }
+
+            resultData += `public ${className}() {\n\t\n}\n\n`;
+            resultData += `public ${className}(`;
+
+            for (let index = 0; index < typeOfPropertys.length; index++) {
+                resultData += `${typeOfPropertys[index]} ${nameOfPropertys[index]}`;
+                if (index != typeOfPropertys.length - 1)
+                    resultData += `, `;
+            }
+            resultData += `) {`;
+            for (let index = 0; index < typeOfPropertys.length; index++) {
+                resultData += `\n\tthis.${nameOfPropertys[index]} = ${nameOfPropertys[index]};`;
+            }
+            resultData += `\n}\n\n`;
+
+            for (let index = 0; index < typeOfPropertys.length; index++) {
+                resultData += `public ${typeOfPropertys[index]} get${CamelCase(nameOfPropertys[index])}() {\n\treturn this.${nameOfPropertys[index]};\n}\n\n`;
+                resultData += `public void set${CamelCase(nameOfPropertys[index])}(${typeOfPropertys[index]} ${nameOfPropertys[index]}) {\n\tthis.${nameOfPropertys[index]} = ${nameOfPropertys[index]}\n}\n\n`;
+            }
+
+            document.getElementById('data-output').value = `${resultData}`;
+        }
+
+        function SwapperMapperText() {
+            let rows = document.getElementById('data-input').value.split('\n');
+            let objectName = document.getElementById('objectName').value;
+
+            let resultData = '';
+
+            for (let index = 0; index < rows.length; index++) {
+
+                let letters = rows[index].trim().split(' ');
+
+                let typeOfProperty = letters[1];
+                let nameOfProperty = letters[2].substr(0, letters[2].length - 1);
+
+                resultData += `${objectName}.set${CamelCase(nameOfProperty)}(resultSet.get${CamelCase(typeOfProperty)}("${nameOfProperty}"));\n`;
+            }
+
+            document.getElementById('data-output').value = `${resultData}`;
+        }
+
+    </script>
+
+</html>
+
+<!-- User -->
+<!-- 
+    
+    private String fullName;
+    private int Id;
+    private float Mark;
+    private Date today;
+    private boolean isEmpty;
+
+    private String fullName;private int fullName; 
+
+                let letters = textInput.trim().split(' ');
+            
+            let type = letters[1];
+            let name_property = letters[2].substr(0, letters[2].length - 1);
+
+            console.log(type);
+
+            console.log(CamelCase(name_property));
+
+            document.getElementById('data-output').value = 
+            `user.set${CamelCase(name_property)}(resultSet.get${CamelCase(type)}("${name_property}"));`;
+-->
+<!-- user.setFullName(resultSet.getString('fullName')) -->

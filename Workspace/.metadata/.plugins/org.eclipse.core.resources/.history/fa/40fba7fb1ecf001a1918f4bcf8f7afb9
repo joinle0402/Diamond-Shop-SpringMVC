@@ -1,0 +1,5 @@
+package DiamondShopping.Dao;
+
+public class ProductDao {
+
+}

@@ -1,0 +1,5 @@
+package DiamondShopping.Dto;
+
+public class Product {
+
+}
